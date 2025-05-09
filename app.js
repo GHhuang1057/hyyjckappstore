@@ -24,6 +24,16 @@ app.get('/', (req, res) => {
   res.send('应用商店首页');
 });
 
+// 获取应用列表API
+app.get('/api/apps', (req, res) => {
+  db.all('SELECT * FROM apps', (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    res.json(rows);
+  });
+});
+
 // 启动服务器
 app.listen(port, () => {
   console.log(`应用商店运行在 http://localhost:${port}`);

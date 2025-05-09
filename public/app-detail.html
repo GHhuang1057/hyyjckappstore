@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>应用详情</title>
+    <style>
+        .app-detail { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .app-icon-large { width: 128px; height: 128px; border-radius: 16px; }
+        .download-btn { display: inline-block; padding: 10px 20px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="app-detail">
+        <div id="app-container"></div>
+    </div>
+    <script>
+        // 获取URL中的应用ID
+        const urlParams = new URLSearchParams(window.location.search);
+        const appId = urlParams.get('id');
+
+        fetch(`/api/apps/${appId}`)
+            .then(response => response.json())
+            .then(app => {
+                const container = document.getElementById('app-container');
+                container.innerHTML = `
+                    <h1>${app.name}</h1>
+                    <img src="${app.icon_url}" alt="${app.name}" class="app-icon-large">
+                    <p>版本：${app.version}</p>
+                    <p>描述：${app.description}</p>
+                    <a href="${app.download_url}" class="download-btn">下载应用</a>
+                `;
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>应用列表</title>
+    <style>
+        .app-list { max-width: 800px; margin: 0 auto; }
+        .app-card { border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin: 10px 0; }
+        .app-icon { width: 64px; height: 64px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <div class="app-list">
+        <h1>所有应用</h1>
+        <div id="apps-container"></div>
+    </div>
+    <script>
+        fetch('/api/apps')
+            .then(response => response.json())
+            .then(apps => {
+                const container = document.getElementById('apps-container');
+                apps.forEach(app => {
+                    const card = document.createElement('div');
+                    card.className = 'app-card';
+                    card.innerHTML = `
+                        <img src="${app.icon_url}" alt="${app.name}" class="app-icon">
+                        <h3>${app.name}</h3>
+                        <p>${app.description}</p>
+                        <p>版本：${app.version}</p>
+                        <a href="/app-detail.html?id=${app.id}" class="btn">查看详情</a>
+                    `;
+                    container.appendChild(card);
+                });
+            });
+    </script>
+</body>
+</html>
